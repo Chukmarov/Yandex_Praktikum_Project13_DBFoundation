@@ -1,7 +1,7 @@
 # Developing data base for Mesto.app
 studing project in YandexPraktikum
 ## Version
-ver 0.0.1
+ver 0.0.2
 ### About
 In this project we developed data base for our last project Mesto.
 App starts at 3000 PORT.

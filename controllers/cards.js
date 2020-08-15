@@ -7,7 +7,7 @@ module.exports.createCard = (req, res) => {
     name, link, owner: req.user._id, likes,
   })
     .then((user) => res.send({ data: user }))
-    .catch((err) => res.status(500).send({ message: err.message }));
+    .catch((err) => res.status(400).send({ message: err.message }));
 };
 
 module.exports.getCards = (req, res) => {
@@ -17,7 +17,11 @@ module.exports.getCards = (req, res) => {
 };
 
 module.exports.deleteCard = (req, res) => {
-  Card.findByIdAndRemove(req.params.cardid)
-    .then(() => res.send({ message: `Карточка ${req.params.cardid} удалена` }))
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
+  Card.findById(req.params.cardid)
+    .orFail(new Error('Данная карточка отсутсвует в базе'))
+    .then((cardid) => {
+      cardid.remove();
+      return res.send({ data: cardid });
+    })
+    .catch((err) => res.status(404).send({ message: err.message }));
 };
